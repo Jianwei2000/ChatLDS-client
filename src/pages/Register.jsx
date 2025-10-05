@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/AuthForm.scss";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { toast } from "react-toastify";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,6 +12,8 @@ const Register = () => {
     password: "",
     pwcheck: "",
   });
+
+  const RegSwal = withReactContent(Swal);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,7 +25,10 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.pwcheck) {
-      alert("密碼不一致");
+      RegSwal.fire({
+        icon: "error",
+        title: "密碼不一致",
+      });
       return;
     }
     try {
@@ -34,14 +41,21 @@ const Register = () => {
         }
       );
       if (res) {
-        alert("註冊成功");
+        toast.success("註冊成功！即將導向首頁");
         window.location.href = "/";
       } else {
-        alert("註冊失敗");
+        RegSwal.fire({
+          icon: "error",
+          title: "註冊失敗",
+        });
       }
     } catch (e) {
       console.log(e);
-      alert(e.response.data);
+      RegSwal.fire({
+        icon: "error",
+        title: "註冊失敗",
+        text: e.response.data,
+      });
     }
   };
   return (

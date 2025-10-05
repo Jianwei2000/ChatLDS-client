@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const LoginSwal = withReactContent(Swal);
 
   const handleChange = (e) => {
     setFormData({
@@ -30,11 +33,19 @@ const Login = () => {
 
         window.location.href = "/";
       } else {
-        alert("登入失敗");
+        LoginSwal.fire({
+          icon: "error",
+          title: "登入失敗",
+        });
+        
       }
     } catch (e) {
       console.log(e);
-      alert(e.response.data);
+       LoginSwal.fire({
+          icon: "error",
+          title: "登入失敗",
+          text: e.response.data,
+        });
     }
   };
   return (
