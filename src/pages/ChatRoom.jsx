@@ -28,7 +28,7 @@ const ChatRoom = () => {
     }
 
     if (!socketRef.current) {
-      socketRef.current = io("http://localhost:8080", {
+      socketRef.current = io(REACT_APP_SERVER_URL, {
         transports: ["websocket"],
       }); // 初始化 socket
     }
